@@ -10,30 +10,30 @@ const handler = createMcpHandler(
         url: z.string(),
         textFile: z.string().optional(),
         wordlist: z.string().optional(),
-        method: z.union([z.literal('GET'), z.literal('POST'), z.literal('JSON'), z.literal('HEADERS')]).optional(),
-        rateLimit: z.any().optional(),
-        chunkSize: z.any().optional()
+        method: z.string().optional(),
+        rateLimit: z.number().optional(),
+        chunkSize: z.number().optional()
       },
       async ({ url, textFile, wordlist, method, rateLimit, chunkSize }) => {
         const args = [];
 
         if (url) {
-          args.push('-u', url);
+          args.push("-u", url);
         }
         if (textFile) {
-          args.push('-f', textFile);
+          args.push("-f", textFile);
         }
         if (wordlist) {
-          args.push('-w', wordlist);
+          args.push("-w", wordlist);
         }
         if (method) {
-          args.push('-m', method);
+          args.push("-m", method);
         }
         if (rateLimit) {
-          args.push('--rate-limit', rateLimit.toString());
+          args.push("--rate-limit", rateLimit.toString());
         }
         if (chunkSize) {
-          args.push('--chunk-size', chunkSize.toString());
+          args.push("--chunk-size", chunkSize.toString());
         }
 
         return {
