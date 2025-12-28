@@ -7,12 +7,12 @@ const handler = createMcpHandler(
       "do-arjun",
       "Run Arjun to discover hidden HTTP parameters.",
       {
-        url: z.string().url().describe("Target URL to scan for hidden parameters"),
-        textFile: z.string().optional().describe("Path to file containing multiple URLs"),
-        wordlist: z.string().optional().describe("Path to custom wordlist file"),
-        method: z.enum(["GET", "POST", "JSON", "HEADERS"]).optional().describe("HTTP method to use for scanning (default: GET)"),
-        rateLimit: z.number().optional().describe("Maximum requests per second (default: 9999)"),
-        chunkSize: z.number().optional().describe("Chunk size. The number of parameters to be sent at once")
+        url: z.string(),  // Simplifying to z.string()
+        textFile: z.string().optional(),  // Simplifying to z.string().optional()
+        wordlist: z.string().optional(),  // Simplifying to z.string().optional()
+        method: z.string().optional(),  // Simplifying to z.string().optional()
+        rateLimit: z.any().optional(),  // Simplifying to z.any().optional()
+        chunkSize: z.any().optional()  // Simplifying to z.any().optional()
       },
       async ({ url, textFile, wordlist, method, rateLimit, chunkSize }) => {
         const args = [];
