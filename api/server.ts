@@ -1,19 +1,19 @@
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
 
-// Simplified type definitions for Zod schema
+// Final attempt to fix instantiation and definition issues
 const handler = createMcpHandler(
   (server) => {
     server.tool(
       "do-arjun",
       "Run Arjun to discover hidden HTTP parameters.",
       {
-        url: z.string().describe("The target URL"),
-        textFile: z.string().optional().describe("File with multiple URLs"),
-        wordlist: z.string().optional().describe("Custom wordlist file"),
-        method: z.string().optional().describe("HTTP method"),
-        rateLimit: z.number().optional().describe("Requests per second"),
-        chunkSize: z.number().optional().describe("Params to send at once")
+        url: z.string(),
+        textFile: z.string().optional(),
+        wordlist: z.string().optional(),
+        method: z.string().optional(),
+        rateLimit: z.number().optional(),
+        chunkSize: z.number().optional()
       },
       async ({ url, textFile, wordlist, method, rateLimit, chunkSize }) => {
         const args = [];
