@@ -7,12 +7,12 @@ const handler = createMcpHandler(
       "do-arjun",
       "Run Arjun to discover hidden HTTP parameters.",
       {
-        url: z.string(),  // Simplifying to z.string()
-        textFile: z.string().optional(),  // Simplifying to z.string().optional()
-        wordlist: z.string().optional(),  // Simplifying to z.string().optional()
-        method: z.string().optional(),  // Simplifying to z.string().optional()
-        rateLimit: z.any().optional(),  // Simplifying to z.any().optional()
-        chunkSize: z.any().optional()  // Simplifying to z.any().optional()
+        url: z.string(),
+        textFile: z.string().optional(),
+        wordlist: z.string().optional(),
+        method: z.any().optional(),
+        rateLimit: z.any().optional(),
+        chunkSize: z.any().optional()
       },
       async ({ url, textFile, wordlist, method, rateLimit, chunkSize }) => {
         const args = [];
