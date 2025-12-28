@@ -10,7 +10,7 @@ const handler = createMcpHandler(
         url: z.string(),
         textFile: z.string().optional(),
         wordlist: z.string().optional(),
-        method: z.any().optional(),
+        method: z.union([z.literal('GET'), z.literal('POST'), z.literal('JSON'), z.literal('HEADERS')]).optional(),
         rateLimit: z.any().optional(),
         chunkSize: z.any().optional()
       },
