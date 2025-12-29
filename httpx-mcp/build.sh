@@ -2,14 +2,24 @@
 
 set -e
 
+# Install JS deps and build the MCP JS bundle (used by stdio version, harmless here)
 npm install >/dev/null 
 npm run build >/dev/null 
 
-go install github.com/projectdiscovery/httpx/cmd/httpx@latest
+# Install ProjectDiscovery httpx (Go binary)
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+
+# Prefer the Go-installed binary explicitly to avoid picking up the Python httpx script
+GO_HTTPX_BIN="$(go env GOPATH)/bin/httpx"
+if [ -x "$GO_HTTPX_BIN" ]; then
+    HTTPX_PATH="$GO_HTTPX_BIN"
+else
+    # Fallback to PATH lookup
+    HTTPX_PATH="$(which httpx)"
+fi
 
 SERVICE_PATH=$(pwd)
 INDEX_PATH="$SERVICE_PATH/build/index.js"
-HTTPX_PATH=$(which httpx)
 COMMAND_NAME=$(basename "$SERVICE_PATH")
 CONFIG_FILE="$SERVICE_PATH/../mcp-config.json"
 
