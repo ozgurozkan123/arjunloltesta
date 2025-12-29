@@ -1,8 +1,11 @@
 import os
+import subprocess
 from fastmcp import FastMCP
 from typing import List, Optional
 
 mcp = FastMCP("httpx-mcp")
+
+HTTPX_BIN = os.getenv("HTTPX_BIN", "httpx")
 
 @mcp.tool()
 def httpx(
@@ -11,14 +14,14 @@ def httpx(
     probes: Optional[List[str]] = None,
 ) -> str:
     """
-    Build an httpx command for scanning targets.
+    Run ProjectDiscovery httpx against target(s) and return the raw output.
 
     Args:
-        target: A list of domains or URLs to scan.
-        ports: Optional list of port numbers to probe.
+        target: List of domains/URLs to scan.
+        ports: Optional list of ports to probe.
         probes: Optional list of probe flags (e.g., status-code, title, web-server).
     Returns:
-        A shell command string the user can run where httpx is installed.
+        Command output (stdout or stderr) from httpx.
     """
     args = ["-u", ",".join(target), "-silent"]
 
@@ -26,12 +29,28 @@ def httpx(
         args += ["-p", ",".join(str(p) for p in ports)]
     if probes:
         for probe in probes:
-            # ensure probe already includes leading dash or not
             flag = probe if probe.startswith("-") else f"-{probe}"
             args.append(flag)
 
-    command = "httpx " + " ".join(args)
-    return command
+    cmd = [HTTPX_BIN] + args
+
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=300,
+        )
+        output = result.stdout.strip()
+        if result.returncode != 0:
+            output = (output + "\n" + result.stderr.strip()).strip()
+            return f"httpx exited with code {result.returncode}:\n{output}"
+        return output or "(no output)"
+    except FileNotFoundError:
+        return "httpx binary not found. Ensure the ProjectDiscovery httpx CLI is installed in the container."
+    except subprocess.TimeoutExpired:
+        return "httpx timed out. Try reducing targets or probes."
 
 if __name__ == "__main__":
     mcp.run(
