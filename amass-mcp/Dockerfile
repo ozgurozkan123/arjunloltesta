@@ -1,15 +1,17 @@
 FROM node:20-slim
 
 # Install Amass binary and dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    wget \
-    unzip \
-  && wget -O /tmp/amass.zip https://github.com/owasp-amass/amass/releases/download/v5.0.1/amass_Linux_amd64.zip \
-  && unzip /tmp/amass.zip -d /tmp \
-  && mv /tmp/amass_Linux_amd64/amass /usr/local/bin/amass \
-  && chmod +x /usr/local/bin/amass \
-  && rm -rf /tmp/amass* /var/lib/apt/lists/*
+RUN set -eux; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends ca-certificates wget unzip; \
+  version="5.0.1"; \
+  url1="https://github.com/owasp-amass/amass/releases/download/v${version}/amass_Linux_amd64.zip"; \
+  url2="https://github.com/owasp-amass/amass/releases/download/v${version}/amass_linux_amd64.zip"; \
+  wget -O /tmp/amass.zip "$url1" || wget -O /tmp/amass.zip "$url2"; \
+  unzip /tmp/amass.zip -d /tmp/amass; \
+  find /tmp/amass -name amass -type f -exec mv {} /usr/local/bin/amass \; ; \
+  chmod +x /usr/local/bin/amass; \
+  rm -rf /tmp/amass* /var/lib/apt/lists/*
 
 WORKDIR /app
 
