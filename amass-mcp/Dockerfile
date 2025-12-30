@@ -16,7 +16,7 @@ RUN npm install
 
 # Copy source
 COPY app ./app
-COPY public ./public 2>/dev/null || true
+COPY public ./public
 
 # Build Next.js
 RUN npm run build
