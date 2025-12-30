@@ -4,7 +4,7 @@ FROM node:20-slim
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends ca-certificates wget unzip; \
-  wget -O /tmp/amass.zip https://sourceforge.net/projects/owasp-amass.mirror/files/v5.0.1/amass_Linux_amd64.zip/download; \
+  wget -O /tmp/amass.zip https://github.com/owasp-amass/amass/releases/latest/download/amass_Linux_amd64.zip; \
   unzip /tmp/amass.zip -d /tmp/amass; \
   find /tmp/amass -name amass -type f -exec mv {} /usr/local/bin/amass \; ; \
   chmod +x /usr/local/bin/amass; \
