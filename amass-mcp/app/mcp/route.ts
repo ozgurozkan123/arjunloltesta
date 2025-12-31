@@ -126,7 +126,7 @@ const handler = createMcpHandler(
         }
       }
     }
-  },
+  } as Parameters<typeof createMcpHandler>[1],
   {
     basePath: "",
     verboseLogs: true,
