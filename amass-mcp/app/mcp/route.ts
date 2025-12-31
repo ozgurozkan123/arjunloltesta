@@ -120,12 +120,7 @@ const handler = createMcpHandler(
   },
   {
     capabilities: {
-      tools: {
-        amass: {
-          description:
-            "Advanced subdomain enumeration and reconnaissance using amass CLI"
-        }
-      }
+      tools: {}
     }
   },
   {
