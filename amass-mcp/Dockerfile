@@ -1,10 +1,14 @@
 FROM node:20-slim
 
 # Install Amass binary and dependencies
+# Note: Amass v4.x uses different release naming than v5.x
+# v4.x: amass_linux_amd64.zip (lowercase linux)
+# v5.x: amass_v5.x.x_linux_amd64.zip
 RUN set -eux; \
   apt-get update; \
-  apt-get install -y --no-install-recommends ca-certificates wget unzip; \
-  wget -O /tmp/amass.zip https://github.com/owasp-amass/amass/releases/latest/download/amass_Linux_amd64.zip; \
+  apt-get install -y --no-install-recommends ca-certificates wget unzip curl; \
+  # Use Amass v4.2.7 which has consistent release naming
+  wget -O /tmp/amass.zip https://github.com/owasp-amass/amass/releases/download/v4.2.7/amass_linux_amd64.zip; \
   unzip /tmp/amass.zip -d /tmp/amass; \
   find /tmp/amass -name amass -type f -exec mv {} /usr/local/bin/amass \; ; \
   chmod +x /usr/local/bin/amass; \
