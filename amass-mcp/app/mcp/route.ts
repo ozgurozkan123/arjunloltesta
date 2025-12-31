@@ -130,8 +130,8 @@ const handler = createMcpHandler(
   {
     basePath: "",
     verboseLogs: true,
-    maxDuration: 60,
-    disableSse: true
+    maxDuration: 300,
+    disableSse: false
   }
 );
 
